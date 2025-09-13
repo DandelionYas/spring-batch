@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: batch
+  batch:
+    job:
+      enabled: true   # run jobs automatically on startup
+    jdbc:
+      initialize-schema: always
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/batch-app
+    driver-class-name: org.postgresql.Driver
+    username: sa
+    password:
