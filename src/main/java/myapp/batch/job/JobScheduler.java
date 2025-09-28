@@ -28,7 +28,7 @@ public class JobScheduler {
   @Scheduled(cron = "${batch-app.demoJobCron}")
   public void runJob() {
     JobParameters params = new JobParametersBuilder()
-        .addString("uppercase-job", LocalDate.now().toString())
+        .addString("uppercase-job", LocalDateTime.now().toString())
         .toJobParameters();
 
     try {
