@@ -1,5 +1,6 @@
 package myapp.batch.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -13,23 +14,24 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import java.util.List;
 
+@Slf4j
 @Configuration
-public class BatchConfig {
+public class UppercaseBatchConfig {
 
     @Bean
     public Job job(JobRepository jobRepository, Step step) {
-        return new JobBuilder("demo-job", jobRepository)
+        return new JobBuilder("uppercase-job", jobRepository)
                 .start(step)
                 .build();
     }
 
     @Bean
     public Step step(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
-        return new StepBuilder("demo-step", jobRepository)
+        return new StepBuilder("uppercase-step", jobRepository)
                 .<String, String>chunk(2, transactionManager)
                 .reader(reader())
                 .processor(processor())
-                .writer(items -> items.forEach(System.out::println))
+                .writer(items -> items.forEach(log::info))
                 .build();
     }
 
