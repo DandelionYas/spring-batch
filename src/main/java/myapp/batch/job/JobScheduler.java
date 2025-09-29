@@ -40,18 +40,16 @@ public class JobScheduler {
         .toJobParameters();
 
     try {
-      log.info("Starting job...");
       jobLauncher.run(job, params);
-      log.info("Finished job...");
 
     } catch (JobExecutionAlreadyRunningException e) {
-      log.error("Job already running", e);
+      log.error("Job already running. jobName: {}", jobName, e);
     } catch (JobRestartException e) {
-      log.error("Job restart failed", e);
+      log.error("Job restart failed. jobName: {}", jobName, e);
     } catch (JobInstanceAlreadyCompleteException e) {
-      log.error("Job instance already complete", e);
+      log.error("Job instance already complete. jobName: {}", jobName, e);
     } catch (JobParametersInvalidException e) {
-      log.error("Job parameters invalid", e);
+      log.error("Job parameters invalid. jobName: {}", jobName, e);
     }
   }
 }
