@@ -1,6 +1,5 @@
 package myapp.batch.job;
 
-import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -22,13 +21,22 @@ import java.time.LocalDateTime;
 public class JobScheduler {
 
   private final JobLauncher jobLauncher;
-  private final Job job;
+  private final Job uppercaseJob;
+  private final Job invoiceJob;
 
-  // Run nightly at 2 AM
-  @Scheduled(cron = "${batch-app.demoJobCron}")
-  public void runJob() {
+  @Scheduled(cron = "${batch-app.uppercaseJobCron}")
+  public void runUppercaseJob() {
+    run("uppercase-job",  uppercaseJob);
+  }
+
+  @Scheduled(cron = "${batch-app.invoiceJobCron}")
+  public void runInvoiceJob() {
+    run("invoice-job", invoiceJob);
+  }
+
+  private void run(String jobName, Job job) {
     JobParameters params = new JobParametersBuilder()
-        .addString("uppercase-job", LocalDateTime.now().toString())
+        .addString(jobName, LocalDateTime.now().toString())
         .toJobParameters();
 
     try {

@@ -20,18 +20,18 @@ import java.util.List;
 public class UppercaseBatchConfig {
 
     @Bean
-    public Job job(JobRepository jobRepository, Step step) {
+    public Job uppercaseJob(JobRepository jobRepository, Step uppercaseStep) {
         return new JobBuilder("uppercase-job", jobRepository)
-                .start(step)
+                .start(uppercaseStep)
                 .build();
     }
 
     @Bean
-    public Step step(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+    public Step uppercaseStep(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
         return new StepBuilder("uppercase-step", jobRepository)
                 .<String, String>chunk(2, transactionManager)
-                .reader(reader())
-                .processor(processor())
+                .reader(uppercaseReader())
+                .processor(upperCaseProcessor())
                 .writer(items -> items.forEach(log::info))
                 .build();
     }
@@ -39,12 +39,12 @@ public class UppercaseBatchConfig {
     @Bean
     @StepScope // This is required because spring batch recognized consumed stateful reader
     // use a stateless reader like DB instead
-    public ListItemReader<String> reader() {
+    public ListItemReader<String> uppercaseReader() {
         return new ListItemReader<>(List.of("Spring", "Batch", "Demo"));
     }
 
     @Bean
-    public ItemProcessor<String, String> processor() {
+    public ItemProcessor<String, String> upperCaseProcessor() {
         return String::toUpperCase;
     }
 }

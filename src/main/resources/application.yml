@@ -14,4 +14,5 @@ spring:
     password: yaser
 
 batch-app:
-  demoJobCron: 0 10 10 * * *
+  uppercaseJobCron: 0/30 * * * * *
+  invoiceJobCron: 15/30 * * * * *
